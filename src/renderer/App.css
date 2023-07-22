@@ -4,19 +4,44 @@
  */
 body {
   position: relative;
-  color: white;
-  height: 100vh;
-  background: linear-gradient(
-    200.96deg,
-    #064933 -29.09%,
-    #4c8fc5 51.77%,
-    #1c3680 129.35%
-  );
+  height: 100%;
+  width: 100%;
+  margin: 0;
   font-family: sans-serif;
-  overflow-y: hidden;
+  color: white;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.home {
   display: flex;
-  justify-content: center;
-  align-items: center;
+}
+
+.bg-image {
+  background-image: url('../../assets/background-small.jpg');
+  filter: blur(10px) brightness(0.3);
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  transform: scale(1.1);
+
+  /* Center and scale the image nicely */
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+
+.bg-content {
+  /* transform: translate(-50%, -50%); */
+  display: flex;
+  margin: auto;
+  margin-top: 10%;
+  z-index: 1;
 }
 
 button {
@@ -54,9 +79,6 @@ a:hover {
   text-decoration: none;
 }
 
-.Hello {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
+.projectlist--buttons {
+  margin: 5px 5px;
 }

@@ -3,50 +3,53 @@ import {
   Routes,
   Route,
   useNavigate,
+  Outlet,
+  useLocation,
 } from 'react-router-dom';
-import icon from '../../assets/icon.svg';
+import { useState } from 'react';
 import './App.css';
 import Projects from './components/Projects';
 import Project from './components/Project';
 import Stark from './components/Stark';
+import ManualOverride from './components/ManualOverride';
 
-function Hello() {
+function Home() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   return (
-    <div>
-      <div className="Hello">
-        <img width="200" alt="icon" src={icon} />
-      </div>
-      <h1>electron-react-boilerplate</h1>
-      <div className="Hello">
-        <button type="button" onClick={() => navigate('/projects')}>
-          Projects
-        </button>
-        <a
-          href="https://github.com/sponsors/electron-react-boilerplate"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="folded hands">
-              🙏
-            </span>
-            Donate
+    <div className="home">
+      <div className="bg-image" />
+      <div className="bg-content">
+        {location.pathname === '/' ? (
+          <button type="button" onClick={() => navigate('/projects')}>
+            Projects
           </button>
-        </a>
+        ) : (
+          <Outlet />
+        )}
       </div>
     </div>
   );
 }
 
 export default function App() {
+  const [missileActive, setMissileActive] = useState(true);
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Hello />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/projects/:id" element={<Project />} />
-        <Route path="/stark" element={<Stark />} />
+        <Route path="/" element={<Home />}>
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:id" element={<Project />} />
+          <Route
+            path="/stark"
+            element={<Stark missileActive={missileActive} />}
+          />
+          <Route
+            path="/manualOverride"
+            element={<ManualOverride setMissileActive={setMissileActive} />}
+          />
+        </Route>
       </Routes>
     </Router>
   );

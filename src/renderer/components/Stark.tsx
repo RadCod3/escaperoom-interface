@@ -1,8 +1,10 @@
+import { Typography } from '@mui/joy';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function Stark() {
+export default function Stark(props: { missileActive: boolean }) {
   const navigate = useNavigate();
+  const { missileActive } = props;
   return (
     <div>
       <h1>Project</h1>
@@ -23,8 +25,17 @@ export default function Stark() {
       </p>
       <p>2021</p>
       <p>
-        STATUS: <span style={{ color: 'red' }}>LAUNCHED</span>
+        STATUS:{' '}
+        <Typography
+          color={missileActive ? 'danger' : 'success'}
+          variant="solid"
+        >
+          {missileActive ? 'LAUNCHED' : 'INACTIVE'}
+        </Typography>
       </p>
+      <button type="button" onClick={() => navigate('/manualOverride')}>
+        Manual Override
+      </button>
       <button type="button" onClick={() => navigate('/projects')}>
         Back
       </button>

@@ -1,7 +1,6 @@
-// react component that lists a bunch of projects
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Input from '@mui/joy/Input/Input';
 import projects from '../../../assets/projects.json';
 
 export default function Projects() {
@@ -22,16 +21,26 @@ export default function Projects() {
   return (
     <div>
       <h1>Projects</h1>
-      <input
+      <Input
         value={projectName}
         onChange={(e) => setProjectName(e.target.value)}
         type="text"
         placeholder="Project Name"
       />
-      <button type="button" onClick={checkProjectName}>
+      <button
+        className="projectlist--buttons"
+        type="button"
+        onClick={checkProjectName}
+      >
         Search
       </button>
-      <Link to="/">Home</Link>
+      <button
+        className="projectlist--buttons"
+        type="button"
+        onClick={() => navigate('/')}
+      >
+        Home
+      </button>
     </div>
   );
 }
