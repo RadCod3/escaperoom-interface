@@ -152,8 +152,8 @@
     "webpack-merge": "^5.9.0"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "EscapeRoom",
+    "appId": "org.rsa.EscapeRoom",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [

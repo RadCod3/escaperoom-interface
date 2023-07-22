@@ -9,7 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, globalShortcut } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -73,6 +73,9 @@ const createWindow = async () => {
     show: false,
     width: 1024,
     height: 728,
+    kiosk: true,
+    frame: false,
+    autoHideMenuBar: true,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged
@@ -98,6 +101,10 @@ const createWindow = async () => {
     mainWindow = null;
   });
 
+  mainWindow.on('close', (e) => {
+    console.log("Don't wanna quit");
+    e.preventDefault();
+  });
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
 
@@ -124,10 +131,32 @@ app.on('window-all-closed', () => {
   }
 });
 
+const shortcutsToCapture = ['Ctrl+A', 'Ctrl+W', 'Ctrl+R', 'F11'];
+
+function registerShortcutCapturing(shortcut: string) {
+  const result = globalShortcut.register(shortcut, () => {
+    console.log(`<${shortcut}> captured!`);
+  });
+
+  if (!result) {
+    console.log(`<${shortcut}> registration failed!`);
+  }
+}
+
+function captureShortcuts(shortcuts: string[]) {
+  shortcuts.forEach((shortcut: string) => {
+    registerShortcutCapturing(shortcut);
+  });
+}
+
 app
   .whenReady()
   .then(() => {
+    captureShortcuts(shortcutsToCapture);
     createWindow();
+    globalShortcut.register('Escape', () => {
+      app.quit();
+    });
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
