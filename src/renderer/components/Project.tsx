@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { Typography } from '@mui/joy';
 import { useNavigate, useParams } from 'react-router-dom';
 import projects from '../../../assets/projects.json';
+import RoboFrame from './RoboFrame';
 
 interface Project_type {
   project_id: number;
@@ -28,9 +30,20 @@ export default function Project() {
 
   return (
     <div>
-      <h1>Project</h1>
+      <RoboFrame style={{ width: '90%', height: '50%', margin: '7% auto' }} />
+      <Typography
+        level="h2"
+        variant="plain"
+        sx={{
+          position: 'relative',
+          color: '#00d6fc',
+          fontFamily: 'Roboto,sans-serif',
+        }}
+      >
+        Project
+      </Typography>
       {project ? (
-        <div>
+        <div style={{ position: 'relative' }}>
           <h2>{project.title}</h2>
           <p>{project.description}</p>
           <p>{project.author}</p>
@@ -40,7 +53,12 @@ export default function Project() {
       ) : (
         <div>Project not found</div>
       )}
-      <button type="button" onClick={() => navigate('/projects')}>
+      <button
+        className="kave-btn"
+        type="button"
+        onClick={() => navigate('/projects')}
+      >
+        <span className="kave-line" />
         Back
       </button>
     </div>

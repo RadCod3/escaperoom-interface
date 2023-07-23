@@ -1,37 +1,11 @@
-import {
-  MemoryRouter as Router,
-  Routes,
-  Route,
-  useNavigate,
-  Outlet,
-  useLocation,
-} from 'react-router-dom';
+import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 import './App.css';
+import Home from './components/Home';
 import Projects from './components/Projects';
 import Project from './components/Project';
 import Stark from './components/Stark';
 import ManualOverride from './components/ManualOverride';
-
-function Home() {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  return (
-    <div className="home">
-      <div className="bg-image" />
-      <div className="bg-content">
-        {location.pathname === '/' ? (
-          <button type="button" onClick={() => navigate('/projects')}>
-            Projects
-          </button>
-        ) : (
-          <Outlet />
-        )}
-      </div>
-    </div>
-  );
-}
 
 export default function App() {
   const [missileActive, setMissileActive] = useState(true);

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Input from '@mui/joy/Input';
+import RoboFrame from './RoboFrame';
 
 export default function ManualOverride(props: {
   setMissileActive: (arg0: boolean) => void;
@@ -32,28 +33,61 @@ export default function ManualOverride(props: {
 
   return (
     <div>
-      <h1>Manual Override</h1>
-      <h2>Enter codes to override the system</h2>
-      <Input
-        value={code1}
-        onChange={(e) => setCode1(e.target.value)}
-        color={code1Correct ? 'success' : 'danger'}
-        type="password"
-        placeholder="Code 1"
-      />
-      <Input
-        value={code2}
-        onChange={(e) => setCode2(e.target.value)}
-        color={code2Correct ? 'success' : 'danger'}
-        type="password"
-        placeholder="Code 2"
-      />
-      <button type="button" onClick={submitHandler}>
-        Submit
-      </button>
-      <button type="button" onClick={() => navigate(-1)}>
-        Back
-      </button>
+      <RoboFrame style={{ width: '50vw', height: '50vh', margin: '7% auto' }} />
+      <div
+        style={{
+          position: 'relative',
+          width: '30vw',
+          height: '30vh',
+        }}
+      >
+        <h1>Manual Override</h1>
+        <h2>Enter codes to override the system</h2>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            gap: '10px',
+          }}
+        >
+          <Input
+            value={code1}
+            onChange={(e) => setCode1(e.target.value)}
+            color={code1Correct ? 'success' : 'danger'}
+            type="password"
+            placeholder="Code 1"
+          />
+          <Input
+            value={code2}
+            onChange={(e) => setCode2(e.target.value)}
+            color={code2Correct ? 'success' : 'danger'}
+            type="password"
+            placeholder="Code 2"
+          />
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '50px',
+            marginTop: '20px',
+          }}
+        >
+          <button className="kave-btn" type="button" onClick={submitHandler}>
+            <span className="kave-line" />
+            Submit
+          </button>
+          <button
+            className="kave-btn"
+            type="button"
+            onClick={() => navigate(-1)}
+          >
+            <span className="kave-line" />
+            Back
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

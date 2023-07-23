@@ -131,7 +131,8 @@ app.on('window-all-closed', () => {
   }
 });
 
-const shortcutsToCapture = ['Ctrl+A', 'Ctrl+W', 'Ctrl+R', 'F11'];
+const shortcutsToCapture = [];
+// const shortcutsToCapture = ['Ctrl+A', 'Ctrl+W', 'Ctrl+R', 'F11'];
 
 function registerShortcutCapturing(shortcut: string) {
   const result = globalShortcut.register(shortcut, () => {
