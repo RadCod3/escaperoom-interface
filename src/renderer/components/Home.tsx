@@ -22,7 +22,7 @@ export default function Home(props: { missileActive: boolean }) {
     const handleCountdownCompleted = () => {
       console.log('boom');
       if (missileActive) {
-        // navigate('/FailedMissile');
+        navigate('/FailedMissile');
       } else if (selfDestruct) {
         navigate('/selfDestructFailed');
       }
