@@ -25,12 +25,14 @@ const configuration: webpack.Configuration = {
 
   target: ['web', 'electron-renderer'],
 
-  entry: [path.join(webpackPaths.srcRendererPath, 'index.tsx')],
-
+  entry: {
+    main: [path.join(webpackPaths.srcRendererPath, 'index.tsx')],
+    countdown: [path.join(webpackPaths.srcRendererPath, 'index2.tsx')],
+  },
   output: {
     path: webpackPaths.distRendererPath,
     publicPath: './',
-    filename: 'renderer.js',
+    filename: '[name].js',
     library: {
       type: 'umd',
     },
@@ -112,13 +114,28 @@ const configuration: webpack.Configuration = {
     }),
 
     new MiniCssExtractPlugin({
-      filename: 'style.css',
+      filename: '[name].css',
     }),
 
     new BundleAnalyzerPlugin({
       analyzerMode: process.env.ANALYZE === 'true' ? 'server' : 'disabled',
       analyzerPort: 8889,
     }),
+
+    // new HtmlWebpackPlugin({
+    //   filename: path.join('index.html'),
+    //   template: path.join(webpackPaths.srcRendererPath, 'index.ejs'),
+    //   minify: {
+    //     collapseWhitespace: true,
+    //     removeAttributeQuotes: true,
+    //     removeComments: true,
+    //   },
+    //   isBrowser: false,
+    //   env: process.env.NODE_ENV,
+    //   isDevelopment: process.env.NODE_ENV !== 'production',
+    //   nodeModules: webpackPaths.appNodeModulesPath,
+    //   chunks: ['main'],
+    // }),
 
     new HtmlWebpackPlugin({
       filename: 'index.html',
@@ -130,6 +147,20 @@ const configuration: webpack.Configuration = {
       },
       isBrowser: false,
       isDevelopment: false,
+      chunks: ['main'],
+    }),
+
+    new HtmlWebpackPlugin({
+      filename: 'index2.html',
+      template: path.join(webpackPaths.srcRendererPath, 'index2.ejs'),
+      minify: {
+        collapseWhitespace: true,
+        removeAttributeQuotes: true,
+        removeComments: true,
+      },
+      isBrowser: false,
+      isDevelopment: false,
+      chunks: ['countdown'],
     }),
 
     new webpack.DefinePlugin({
