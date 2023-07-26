@@ -19,6 +19,7 @@ import {
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import axios from 'axios';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
@@ -37,6 +38,7 @@ ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
   event.reply('ipc-example', msgTemplate('pong'));
+  const response = axios.get('http://192.168.1.1/ledon_yellow');
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -198,16 +200,19 @@ app
 
     ipcMain.on('start-countdown', () => {
       console.log('start-countdown signal received');
+      const response = axios.get('http://192.168.1.1/ledon_yellow');
       secondScreen?.webContents.send('start-countdown');
     });
 
     ipcMain.on('manual-override', () => {
       console.log('manual-override signal received');
+      const response = axios.get('http://192.168.1.1/ledon_green');
       secondScreen?.webContents.send('manual-override');
     });
 
     ipcMain.on('self-destruct', () => {
       console.log('self-destruct signal received');
+      const response = axios.get('http://192.168.1.1/ledon_red');
       mainWindow?.webContents.send('self-destruct');
     });
 

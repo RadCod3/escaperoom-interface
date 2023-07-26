@@ -17,8 +17,8 @@ export default function FailedMissile() {
       <RoboFrame
         style={{
           position: 'absolute',
-          width: '60%',
-          height: '60%',
+          width: '75%',
+          height: '70%',
           margin: '5% auto',
         }}
       />
@@ -29,15 +29,24 @@ export default function FailedMissile() {
           flexDirection: 'column',
           width: '70%',
           margin: 'auto',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
-        <img src={missileExplosion} alt="missile explosion" />
+        <img
+          src={missileExplosion}
+          alt="missile explosion"
+          style={{
+            width: '65vw',
+          }}
+        />
         <Typography
           sx={{
             position: 'relative',
             margin: 'auto',
             width: '100%',
             marginTop: '20px',
+            fontFamily: 'VT323, monospace',
           }}
           color="danger"
           level="h3"

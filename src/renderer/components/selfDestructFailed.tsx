@@ -2,11 +2,10 @@ import React, { useEffect } from 'react';
 import { Typography } from '@mui/joy';
 import useSound from 'use-sound';
 import RoboFrame from './RoboFrame';
-import missileExplosion from '../../../assets/missile_explode.gif';
-import missileSound from '../../../assets/missile_sound.mp3';
+import tornadoSiren from '../../../assets/tornado_warning.mp3';
 
 export default function SelfDestructFailed() {
-  const [play] = useSound(missileSound);
+  const [play] = useSound(tornadoSiren, { loop: true });
 
   useEffect(() => {
     play();
@@ -27,17 +26,30 @@ export default function SelfDestructFailed() {
           position: 'relative',
           display: 'flex',
           flexDirection: 'column',
-          width: '70%',
+          width: '90%',
           margin: 'auto',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
-        <img src={missileExplosion} alt="missile explosion" />
+        <Typography
+          sx={{
+            width: '100%',
+            fontFamily: 'VT323, monospace',
+            fontSize: '5rem',
+          }}
+          color="danger"
+          level="h3"
+        >
+          GAME OVER
+        </Typography>
         <Typography
           sx={{
             position: 'relative',
             margin: 'auto',
             width: '100%',
             marginTop: '20px',
+            fontFamily: 'VT323, monospace',
           }}
           color="danger"
           level="h3"
