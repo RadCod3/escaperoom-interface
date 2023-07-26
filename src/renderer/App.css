@@ -37,6 +37,20 @@ body {
   z-index: -1;
 }
 
+.bg-image-red {
+  background-image: url('../../assets/background-smallred.png');
+  filter: blur(10px) brightness(0.3);
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  transform: scale(1.1);
+
+  /* Center and scale the image nicely */
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+
 .bg-content {
   /* transform: translate(-50%, -50%); */
   display: flex;

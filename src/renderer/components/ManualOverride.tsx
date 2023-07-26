@@ -2,32 +2,24 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Input from '@mui/joy/Input';
 import RoboFrame from './RoboFrame';
+import RubikCubeGIF from '../../../assets/rubik.gif';
 
 export default function ManualOverride(props: {
   setMissileActive: (arg0: boolean) => void;
 }) {
   const [code1, setCode1] = useState('');
-  const [code2, setCode2] = useState('');
   const [code1Correct, setCode1Correct] = useState(false);
-  const [code2Correct, setCode2Correct] = useState(false);
   const navigate = useNavigate();
   const { setMissileActive } = props;
 
   const submitHandler = () => {
     if (code1 === '1234') {
       setCode1Correct(true);
+      setMissileActive(false);
+      window.electron.ipcRenderer.sendMessage('manual-override', ['ping']);
+      navigate('/stark');
     } else {
       setCode1Correct(false);
-    }
-    if (code2 === '5678') {
-      setCode2Correct(true);
-    } else {
-      setCode2Correct(false);
-    }
-
-    if (code1 === '1234' && code2 === '5678') {
-      setMissileActive(false);
-      navigate('/stark');
     }
   };
 
@@ -39,6 +31,10 @@ export default function ManualOverride(props: {
           position: 'relative',
           width: '30vw',
           height: '30vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <h1>Manual Override</h1>
@@ -46,7 +42,6 @@ export default function ManualOverride(props: {
         <div
           style={{
             display: 'flex',
-            flexDirection: 'column',
             justifyContent: 'center',
             gap: '10px',
           }}
@@ -58,12 +53,12 @@ export default function ManualOverride(props: {
             type="password"
             placeholder="Code 1"
           />
-          <Input
-            value={code2}
-            onChange={(e) => setCode2(e.target.value)}
-            color={code2Correct ? 'success' : 'danger'}
-            type="password"
-            placeholder="Code 2"
+          <img
+            src={RubikCubeGIF}
+            alt="rubik cube"
+            style={{
+              width: '50px',
+            }}
           />
         </div>
         <div
