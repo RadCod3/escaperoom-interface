@@ -28,6 +28,10 @@ const configuration: webpack.Configuration = {
           },
         },
       },
+      {
+        test: /\.(mp3|wav)$/i,
+        type: 'asset/resource',
+      },
     ],
   },
 

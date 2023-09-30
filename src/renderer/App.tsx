@@ -1,44 +1,21 @@
-import {
-  MemoryRouter as Router,
-  Routes,
-  Route,
-  useNavigate,
-  Outlet,
-  useLocation,
-} from 'react-router-dom';
+import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 import './App.css';
+import Home from './components/Home';
 import Projects from './components/Projects';
 import Project from './components/Project';
 import Stark from './components/Stark';
 import ManualOverride from './components/ManualOverride';
-
-function Home() {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  return (
-    <div className="home">
-      <div className="bg-image" />
-      <div className="bg-content">
-        {location.pathname === '/' ? (
-          <button type="button" onClick={() => navigate('/projects')}>
-            Projects
-          </button>
-        ) : (
-          <Outlet />
-        )}
-      </div>
-    </div>
-  );
-}
+import FailedMissile from './components/FailedMissile';
+import SelfDestructClue from './components/selfDestructClue';
+import SelfDestructFailed from './components/selfDestructFailed';
 
 export default function App() {
   const [missileActive, setMissileActive] = useState(true);
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />}>
+        <Route path="/" element={<Home missileActive={missileActive} />}>
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/:id" element={<Project />} />
           <Route
@@ -49,6 +26,9 @@ export default function App() {
             path="/manualOverride"
             element={<ManualOverride setMissileActive={setMissileActive} />}
           />
+          <Route path="/FailedMissile" element={<FailedMissile />} />
+          <Route path="/selfDestructClue" element={<SelfDestructClue />} />
+          <Route path="/selfDestructFailed" element={<SelfDestructFailed />} />
         </Route>
       </Routes>
     </Router>

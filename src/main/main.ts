@@ -9,9 +9,17 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain, globalShortcut } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  shell,
+  ipcMain,
+  globalShortcut,
+  screen,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import axios from 'axios';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
@@ -24,11 +32,13 @@ class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
+let secondScreen: BrowserWindow | null = null;
 
 ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
   event.reply('ipc-example', msgTemplate('pong'));
+  const response = axios.get('http://192.168.1.1/ledon_yellow');
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -69,12 +79,36 @@ const createWindow = async () => {
     return path.join(RESOURCES_PATH, ...paths);
   };
 
+  const displays = screen.getAllDisplays();
+  const externalDisplay = displays.find((display) => {
+    return display.bounds.x !== 0 || display.bounds.y !== 0;
+  });
+
+  // if (externalDisplay) {
+  secondScreen = new BrowserWindow({
+    // x: externalDisplay.bounds.x,
+    // y: externalDisplay.bounds.y,
+    width: 1024,
+    height: 728,
+    // kiosk: true,
+    // frame: false,
+    autoHideMenuBar: true,
+    icon: getAssetPath('icon.png'),
+    webPreferences: {
+      preload: app.isPackaged
+        ? path.join(__dirname, 'preload.js')
+        : path.join(__dirname, '../../.erb/dll/preload.js'),
+    },
+  });
+  secondScreen.loadURL(resolveHtmlPath('index2.html'));
+  // }
+
   mainWindow = new BrowserWindow({
     show: false,
     width: 1024,
     height: 728,
-    kiosk: true,
-    frame: false,
+    // kiosk: true,
+    // frame: false,
     autoHideMenuBar: true,
     icon: getAssetPath('icon.png'),
     webPreferences: {
@@ -101,10 +135,10 @@ const createWindow = async () => {
     mainWindow = null;
   });
 
-  mainWindow.on('close', (e) => {
-    console.log("Don't wanna quit");
-    e.preventDefault();
-  });
+  // mainWindow.on('close', (e) => {
+  //   console.log("Don't wanna quit");
+  //   e.preventDefault();
+  // });
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
 
@@ -131,7 +165,8 @@ app.on('window-all-closed', () => {
   }
 });
 
-const shortcutsToCapture = ['Ctrl+A', 'Ctrl+W', 'Ctrl+R', 'F11'];
+const shortcutsToCapture = [];
+// const shortcutsToCapture = ['Ctrl+A', 'Ctrl+W', 'Ctrl+R', 'F11'];
 
 function registerShortcutCapturing(shortcut: string) {
   const result = globalShortcut.register(shortcut, () => {
@@ -157,6 +192,30 @@ app
     globalShortcut.register('Escape', () => {
       app.quit();
     });
+
+    ipcMain.on('countdown-completed', () => {
+      console.log('countdown-completed signal received');
+      mainWindow?.webContents.send('countdown-completed');
+    });
+
+    ipcMain.on('start-countdown', () => {
+      console.log('start-countdown signal received');
+      const response = axios.get('http://192.168.1.1/ledon_yellow');
+      secondScreen?.webContents.send('start-countdown');
+    });
+
+    ipcMain.on('manual-override', () => {
+      console.log('manual-override signal received');
+      const response = axios.get('http://192.168.1.1/ledon_green');
+      secondScreen?.webContents.send('manual-override');
+    });
+
+    ipcMain.on('self-destruct', () => {
+      console.log('self-destruct signal received');
+      const response = axios.get('http://192.168.1.1/ledon_red');
+      mainWindow?.webContents.send('self-destruct');
+    });
+
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
